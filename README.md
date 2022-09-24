@@ -29,17 +29,10 @@ https://mr-spock.tistory.com/19
 
 3. 터미널을 cmd로 열어주면
 
-   ```(venv) C:\Users\cho\python_vscode_practice>
-
-   식으로 뜨게됨
-
-   ```
+   `(venv) C:\Users\cho\python_vscode_practice> ` 이런 식으로 뜨게됨
 
 4. "python main.py" 로 서버 실행 혹은 F5키를 눌러 '디버그구성'에서 'python 파일 '실행
 
 설치된 모듈들 확인 명령어
 
-```pip list
-
-
-```
+`pip list`
