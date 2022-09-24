@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="../static/style2.css"/>
+
+    <title>인생 버킷리스트</title>
+
+    <script>
+        function to_content_add() {
+            window.location.href = '/add';
+        }
+
+        function to_main() {
+            window.location.href = '/';
+        }
+
+
+        function to_detail() {
+            window.location.href = '/detail';
+        }
+
+        function to_sign() {
+            window.location.href = '/sign';
+        }
+
+        function to_login() {
+            window.location.href = '/login';
+        }
+
+        function handle_submit() {
+
+            let input = $('#input').val()
+            let input2 = $('#input2').val()
+            let textarea = $('#textarea').val()
+
+            const date = new Date();
+            const getFullYear = date.getFullYear();
+            const getMonth = date.getMonth();
+            const getDay = date.getDay(); // day: 요일반환
+            const getDate = date.getDate(); // day: 요일반환
+
+
+            const today = `${getFullYear}년 ${getMonth + 1}월 ${getDate}일`
+
+
+            $.ajax({
+                type: "POST",
+                url: "/users/comments/insert",
+                data: {
+                    date: today,
+                    title: input,
+                    content: textarea,
+                    commentid: Date.now(),
+                    userid: 'userid',
+                    nickname: input2,
+                },
+                success: function (response) {
+                    {#alert(response["msg"])#}
+                    console.log(response)
+                    {#window.location.reload()#}
+                }
+            });
+
+            to_main()
+        }
+
+    </script>
+</head>
+<body>
+<div class="mypic">
+    <div class="modal">
+
+        <h1 class="h1">응원 받기</h1>
+        <p class="ps nickname">닉네임 : <input id="input2" class="text_input" type="text"/></p>
+        <p class="ps title">
+            제목 : <input id="input" class="text_input" type="text"/>
+        </p>
+        <p class="ps title">내용 :</p>
+
+        <textarea id="textarea" class="textarea" name="story">
+ 저는 신짱 과자를 하루에 두개씩 먹었는데 오늘부터는 체중 감량을 위해 과자를 먹지 않겠습니다 </textarea>
+
+        <div class="buttons">
+            <button class="button1 button_cancel" onclick="to_main()">취소</button>
+            <button class="button1 button_submit" onclick="handle_submit()">확인</button>
+
+        </div>
+
+
+    </div>
+</div>
+</body>
+</html>

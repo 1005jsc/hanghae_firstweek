@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+
+
+    <title>항상 응원해</title>
+
+    <style>
+        * {
+            font-family: 'Gowun Dodum', sans-serif;
+        }
+
+        button {
+            outline: 0;
+            cursor: pointer;
+            border: 0;
+        }
+
+        .mypic {
+            width: 100%;
+            height: 300px;
+            background-color: #BCC6E8;
+            color: white;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mypic > h1 {
+            font-size: 40px;
+        }
+
+        .login_buttons {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 240px;
+            height: 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-left: 50px;
+            padding-right: 30px;
+        }
+
+        .login {
+            background-color: transparent;
+            color: #3850BE;
+        }
+
+        .login:hover {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .sign_in {
+            background-color: transparent;
+            color: #3850BE;
+        }
+
+        .sign_in:hover {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .box-wrapper {
+            width: 900px;
+            margin: 50px auto 0;
+        }
+
+        .comment_box {
+            margin-top: 40px;
+        }
+
+        .comment_input {
+            width: 70%;
+            margin-right: 10px;
+        }
+
+        .comment_input_wrap {
+            display: flex;
+        }
+
+        .nickname {
+            font-size: 20px;
+        }
+
+        .yoyo {
+            border: 1px solid black;
+        }
+
+    </style>
+
+    <script>
+        $(document).ready(function () {
+
+
+            const urlStr = window.location.href
+
+            const url = new URL(urlStr);
+
+            const urlParams = url.searchParams;
+
+            const tag = urlParams.get('commentid');
+
+
+            $.ajax({
+                type: "POST",
+                url: "/users/comment",
+                data: {commentid: tag},
+                success: function (response) {
+
+
+                    let user = response.user
+
+                    let temp_html = `<div class="box box-wrapper yoyo">
+                    <h1 class="nickname">${user.nickname}</h1>
+                    <p>${user.content}</p>
+
+                    <div class="comment_box">
+                        <div class="mb-3 row">
+                            <label class="col-sm-2 col-form-label">${user.date}</label>
+                            <div class="col-sm-10 comment_input_wrap">
+                                <input type="password" class="form-control comment_input">
+                                <button class="btn btn-primary" type="submit">응원하기</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">No</th>
+                            <th scope="col">닉네임</th>
+                            <th scope="col">내용</th>
+                            <th scope="col">작성일자</th>
+                            <th scope="col">수정하기</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Mark</td>
+                            <td>Otto</td>
+                            <td>@mdo</td>
+                            <td>
+                                <a>수정</a>/
+                                <a>삭제</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">2</th>
+                            <td>Jacob</td>
+                            <td>Thornton</td>
+                            <td>@fat</td>
+                            <td>
+                                <a>수정</a>/
+                                <a>삭제</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row">3</th>
+                            <td>Larry the Bird</td>
+                            <td>Larry the Bird</td>
+                            <td>@twitter</td>
+                            <td>
+                                <a>수정</a>/
+                                <a>삭제</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>`
+                    $('#yoyoyo').append(temp_html)
+
+
+                }
+            });
+
+
+        })
+        ;
+
+
+        function to_sign() {
+            window.location.href = '/sign';
+        }
+
+        function to_login() {
+            window.location.href = '/login';
+        }
+    </script>
+</head>
+<body>
+<div class="mypic">
+    <div class="login_buttons">
+        <button class="login" onclick="to_login()">LOGIN</button>
+        <button class="sign_in" onclick="to_sign()">SIGN IN</button>
+    </div>
+
+    <h1 class="title_logo"><a href="/">항상 응원해!</a></h1>
+</div>
+
+<div id="yoyoyo">
+
+</div>
+
+
+</body>
+</html>

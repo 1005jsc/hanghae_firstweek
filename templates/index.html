@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+    <script src="../static/cookie.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
+    />
+
+    <link rel="stylesheet" href="../static/style.css" />
+
+    <title>인생 버킷리스트</title>
+
+    <script>
+      $(document).ready(function () {
+        $.ajax({
+          type: 'GET',
+          url: '/users',
+          data: {},
+          success: function (response) {
+            let rows = response.users;
+            for (let i = 0; i < rows.length; i++) {
+              let date = rows[i].date;
+              let title = rows[i].title;
+              let content = rows[i].content;
+              let commentid = rows[i].commentid;
+              let userid = rows[i].userid;
+              let nickname = rows[i].nickname;
+
+              let temp_html = `
+                               <div class="card_container">
+                                  <div class="cardyo">
+                                      <div class="button_container">
+                                          <button class="buttonyo1 edit">수정</button>
+                                          <button class="buttonyo1 delete1" onclick="handle_delete()">삭제</button>
+                                      </div>
+
+                                      <span class="nickname">${nickname}</span>
+                                      <span class="titleyoyo">${title} </span>
+
+                                      <span class="date">${date}</span>
+
+                                      <button class="lets_cheer" onclick="to_detail(${commentid})">
+      {#                                <button class="lets_cheer" >#}
+                                          응원하기
+                                      </button>
+                                  </div>
+                              </div>
+                              `;
+              $('#cards').append(temp_html);
+            }
+          },
+        });
+      });
+
+      function to_content_add() {
+        window.location.href = '/add';
+        alert('contentadd');
+      }
+
+      function to_main() {
+        // 만약에 토큰이 없는 경우 벨류가 login으로 뜨고,
+        // 토큰을 가지고 있는 경우 벨류가 logout으로 뜨면서 토큰을 삭제한다
+        window.location.href = '/';
+        alert('main');
+      }
+
+      function to_detail(e) {
+        window.location.href = `/detail?commentid=${e}`;
+      }
+
+      function to_sign() {
+        window.location.href = '/sign';
+        alert('sign');
+      }
+
+      function login_go() {
+        window.location.href = '/login';
+      }
+
+      function sign_go() {
+        window.location.href = '/sign';
+      }
+
+      window.addEventListener('load', function () {
+        let token = document.cookie;
+        let header1 = document.querySelector('.header-list');
+        let header2 = document.querySelector('.header-list2');
+        let header3 = document.querySelector('.header-list3');
+        if (token != '') {
+          console.log(token);
+          header1.style.display = 'none';
+          header2.style.display = 'none';
+          header3.style.display = 'flex';
+        } else {
+          header1.style.display = 'flex';
+          header2.style.display = 'flex';
+          header3.style.display = 'none';
+        }
+      });
+
+      function sign_out() {
+        $.removeCookie('mytoken', { path: '/' }); // => true
+        window.location.reload();
+      }
+    </script>
+  </head>
+  <body>
+    <div class="mypic">
+      <div class="login_buttons">
+        <button class="login header-list" onclick="login_go()">LOGIN</button>
+        <button class="sign_in header-list2" onclick="sign_go()">
+          SIGN UP
+        </button>
+
+        <button class="login header-list3" onclick="sign_out()">LOGOUT</button>
+      </div>
+
+      <h1 class="title_logo">항상 응원해!</h1>
+      <button
+        class="add_comment button is-link is-light login"
+        onclick="to_content_add()"
+      >
+        응원 받기
+      </button>
+    </div>
+
+    <div class="cards" id="cards"></div>
+  </body>
+</html>
